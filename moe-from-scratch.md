@@ -8,3 +8,7 @@ category: MoE
 ## Mixture of Experts
 
 This is a draft blog post about implementing a Mixture of Experts (MoE) transformer architecture from scratch in PyTorch.
+
+## Mixture of Experts (MoE) Visualized
+
+![MoE](/visuals/trans/MoE.png)

@@ -37,7 +37,7 @@
     <main class="container">
         <article class="window">
     <a href="index.html" class="back-link">← Back</a>
-
+    
     <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
         <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
             MoE From Scratch in Code
@@ -52,6 +52,12 @@
         <h2 id="mixture-of-experts">Mixture of Experts</h2>
 <p>This is a draft blog post about implementing a Mixture of Experts
 (MoE) transformer architecture from scratch in PyTorch.</p>
+<h2 id="mixture-of-experts-moe-visualized">Mixture of Experts (MoE)
+Visualized</h2>
+<figure>
+<img src="/visuals/trans/MoE.png" alt="MoE" />
+<figcaption aria-hidden="true">MoE</figcaption>
+</figure>
 
     </div>
 </article>
@@ -119,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
+            
             canvas.width = Math.floor(width * dpr);
             canvas.height = Math.floor(height * dpr);
             canvas.style.width = width + 'px';
@@ -140,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const spread = 200 + Math.random() * 300;
                 const angle = Math.random() * Math.PI * 2;
                 const dist = Math.random() * spread;
-
+                
                 return {
                     x: cx + Math.cos(angle) * dist,
                     y: cy + Math.sin(angle) * dist,
@@ -259,19 +265,19 @@ document.addEventListener('DOMContentLoaded', () => {
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const toggle = document.getElementById('theme-toggle');
-
+            
             function updateToggleIcon(theme) {
                 toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
             }
-
+            
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
             updateToggleIcon(currentTheme);
-
+            
             toggle.addEventListener('click', (e) => {
                 e.preventDefault();
                 const current = document.documentElement.getAttribute('data-theme') || 'light';
                 const nextTheme = current === 'dark' ? 'light' : 'dark';
-
+                
                 document.documentElement.setAttribute('data-theme', nextTheme);
                 localStorage.setItem('theme', nextTheme);
                 updateToggleIcon(nextTheme);
