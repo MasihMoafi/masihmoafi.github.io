@@ -128,3 +128,12 @@ $$(\huge T, \underline{T}) \times (\underline{T}, \text{head\_size}) = (T, \text
     
 2. `ln2` stabilizes the data _after_ attention, right _before_ it goes into the FFN.
 
+
+## Visual References
+![history.png](visuals/history.png)
+![history-lm.png](visuals/history-lm.png)
+![word2vec.png](visuals/word2vec.png)
+![rnn-ex.png](visuals/rnn-ex.png)
+![transformers.png](visuals/transformers.png)
+![compute.png](visuals/compute.png)
+![opt-techniques-kv-flash-quant.png](visuals/opt-techniques-kv-flash-quant.png)

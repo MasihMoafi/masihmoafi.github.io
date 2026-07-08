@@ -12,3 +12,6 @@ This is a draft blog post about implementing a Mixture of Experts (MoE) transfor
 ## Mixture of Experts (MoE) Visualized
 
 ![MoE](/visuals/trans/MoE.png)
+
+## Visual Reference
+![MoE](visuals/MoE.png)
