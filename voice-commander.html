@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Local voice transcription with AI-powered refinement for developers.">
+    <title>Voice Commander | Masih Moafi</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- KaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        // Apply theme before DOM paints to prevent flash of light theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</head>
+<body>
+    <!-- Space Particle constellation Background -->
+    <canvas id="space-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand"><a href="index.html" style="text-decoration: none; color: inherit;">Masih Moafi</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="#" id="theme-toggle" style="cursor: pointer; font-size: 1.1rem; padding: 0 0.5rem; text-decoration: none; display: inline-block;">🌙</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="window">
+    <a href="index.html#projects" class="back-link">← Back to Projects</a>
+    
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
+            Voice Commander
+        </h1>
+        Local voice transcription with AI-powered refinement for developers.
+        <p class="writeup-meta" style="color: var(--accent); font-weight: bold; margin-top: 1rem;">
+            AUTHOR: MASIH MOAFI
+        </p>
+    </div>
+
+    <div class="writeup-content">
+        <h1 id="voice-commander">Voice Commander 🎙️</h1>
+<p><strong>Local voice transcription with AI-powered refinement for
+developers</strong></p>
+<p>Transform your speech into clean, structured prompts using
+Whisper.cpp (local, GPU-accelerated) + Gemini API (cloud
+refinement).</p>
+<h2 id="features">✨ Features</h2>
+<ul>
+<li>🎤 <strong>Hotkey Recording</strong>: F8/ F9/ R-Ctrl to
+start/stop</li>
+<li>🚀 <strong>GPU Acceleration</strong>: CUDA-powered Whisper
+transcription</li>
+<li>🤖 <strong>AI Refinement(Optional)</strong>: Gemini-flash cleans up
+filler words, fixes grammar, structures output</li>
+<li>📝 <strong>Structured Output</strong>: XML/JSON/plain text
+formats</li>
+<li>🔒 <strong>Privacy-First</strong>: Transcription runs locally, only
+refined text hits API</li>
+<li>⚡ <strong>Auto-Paste</strong>: Seamlessly inserts text at
+cursor</li>
+</ul>
+<h2 id="demo">🎬 Demo</h2>
+<p>https://github.com/user-attachments/assets/1eeacd19-4602-4b91-96ab-f201c0fc4dd9</p>
+<h2 id="use-cases">🎯 Use Cases</h2>
+<ul>
+<li>Dictate code comments with “um” and “uh”</li>
+<li>Convert rambling thoughts into structured prompts</li>
+<li>Hands-free coding when keyboard is unavailable or if you just hate
+typing!</li>
+</ul>
+<h2 id="setup">Setup</h2>
+<h3 id="linux-gpu-accelerated">Linux (GPU-accelerated)</h3>
+<ol type="1">
+<li><p><strong>Build whisper.cpp with CUDA:</strong></p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/ggerganov/whisper.cpp.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> whisper.cpp</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> build <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> build</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cmake</span> .. <span class="at">-DGGML_CUDA</span><span class="op">=</span>ON <span class="at">-DCMAKE_BUILD_TYPE</span><span class="op">=</span>Release</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cmake</span> <span class="at">--build</span> . <span class="at">--config</span> Release <span class="at">-j</span><span class="va">$(</span><span class="fu">nproc</span><span class="va">)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span></code></pre></div></li>
+<li><p><strong>Download model:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> whisper.cpp/models</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> download-ggml-model.sh medium.en</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span></code></pre></div></li>
+<li><p><strong>Install Python dependencies:</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install sounddevice scipy numpy pyperclip pynput python-dotenv google-genai</span></code></pre></div></li>
+<li><p><strong>Configure AI refinement (optional but
+recommended):</strong></p>
+<p>Copy the example config:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> .env.example .env</span></code></pre></div>
+<p>Edit <code>.env</code> and add your Gemini API key:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">GEMINI_API_KEY</span><span class="op">=</span>your-api-key-here</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">VC_ENABLE_LLM</span><span class="op">=</span>true</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="va">VC_LLM_FORMAT</span><span class="op">=</span>xml  <span class="co"># Options: plain, xml, json</span></span></code></pre></div>
+<p>Get a free API key: https://aistudio.google.com/apikey</p></li>
+<li><p><strong>Run Voice Commander:</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> Linux/portable_commander_gpu.py</span></code></pre></div></li>
+</ol>
+<h3 id="macoswindows">macOS/Windows</h3>
+<ol type="1">
+<li><p><strong>Install whisper.cpp:</strong></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/ggerganov/whisper.cpp.git</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> whisper.cpp</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span></span></code></pre></div></li>
+<li><p><strong>Download model:</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./models/download-ggml-model.sh medium.en</span></code></pre></div></li>
+<li><p><strong>Install Python dependencies:</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install sounddevice scipy numpy pyperclip pynput</span></code></pre></div></li>
+<li><p><strong>Run Voice Commander:</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> portable_commander.py</span></code></pre></div></li>
+</ol>
+<h2 id="usage">Usage</h2>
+<ul>
+<li>Press F8/ R-ctrl to start recording</li>
+<li>Press F9/ R-ctrl to stop and paste text</li>
+<li>Works everywhere; namely inside your terminal.</li>
+</ul>
+<h2 id="configuration">⚙️ Configuration</h2>
+<p>Edit <code>.env</code> file:</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Options</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>VC_ENABLE_LLM</code></td>
+<td><code>true</code>/<code>false</code></td>
+<td><code>true</code></td>
+<td>Enable AI refinement</td>
+</tr>
+<tr class="even">
+<td><code>VC_LLM_FORMAT</code></td>
+<td><code>plain</code>/<code>xml</code>/<code>json</code></td>
+<td><code>xml</code></td>
+<td>Output structure</td>
+</tr>
+<tr class="odd">
+<td><code>GEMINI_API_KEY</code></td>
+<td>Your API key</td>
+<td>-</td>
+<td>Required for refinement</td>
+</tr>
+<tr class="even">
+<td><code>VC_PASTE_MODE</code></td>
+<td><code>auto</code>/<code>ctrl_v</code>/<code>ctrl_shift_v</code></td>
+<td><code>auto</code></td>
+<td>Paste behavior</td>
+</tr>
+</tbody>
+</table>
+<h2 id="requirements">📋 Requirements</h2>
+<ul>
+<li>Python 3.7+</li>
+<li>CUDA-capable GPU (for acceleration)</li>
+<li>whisper.cpp compiled in parent directory</li>
+<li>Microphone access</li>
+<li>Gemini API key (free tier available)</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code>Input:  &quot;um so like I want to [NOISE] create a function that uh calculates fibonacci&quot;
+Output: &lt;prompt&gt;&lt;task&gt;Create a function that calculates the Fibonacci sequence&lt;/task&gt;&lt;/prompt&gt;</code></pre>
+<h2 id="contributing">🤝 Contributing</h2>
+<p>PRs welcome! Areas for improvement: - Additional LLM providers
+(OpenAI, Anthropic) - Multi-language support</p>
+<h2 id="license">📄 License</h2>
+<p>MIT License - see <a href="LICENSE">LICENSE</a> file</p>
+
+    </div>
+</article>
+
+<script>
+    // Make all images inside post write-ups clickable to open in full size
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.writeup-content img').forEach(img => {
+            if (img.parentElement.tagName !== 'A') {
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.target = '_blank';
+                link.style.cursor = 'zoom-in';
+                img.parentNode.insertBefore(link, img);
+                link.appendChild(img);
+            }
+        });
+    });
+</script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Masih Moafi. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Space Background constellation canvas animation script -->
+    <script>
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+        let raf;
+        let time = 0;
+
+        function getThemeColors() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            return {
+                bg: isDark ? '#080808' : '#fdfcf9',
+                amber: isDark ? 'rgba(255, 152, 0,' : 'rgba(230, 81, 0,',
+                amber_lt: isDark ? 'rgba(255, 198, 54,' : 'rgba(255, 118, 0,',
+                white: isDark ? 'rgba(140, 125, 105,' : 'rgba(80, 70, 60,',
+                dim: isDark ? 'rgba(110, 75, 20,' : 'rgba(200, 180, 160,'
+            };
+        }
+
+        function build() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            
+            canvas.width = Math.floor(width * dpr);
+            canvas.height = Math.floor(height * dpr);
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const count = Math.floor(250 * (width / 1920) * Math.max(1, height / 900));
+            const clusterCount = 6;
+            const clusters = Array.from({ length: clusterCount }, () => ({
+                cx: Math.random() * width,
+                cy: Math.random() * height,
+                cz: Math.random() * 800,
+            }));
+
+            nodes = Array.from({ length: count }, () => {
+                const cl = Math.floor(Math.random() * clusterCount);
+                const { cx, cy, cz } = clusters[cl];
+                const spread = 200 + Math.random() * 300;
+                const angle = Math.random() * Math.PI * 2;
+                const dist = Math.random() * spread;
+                
+                return {
+                    x: cx + Math.cos(angle) * dist,
+                    y: cy + Math.sin(angle) * dist,
+                    z: Math.max(0, cz + (Math.random() - 0.5) * 300),
+                    vx: (Math.random() - 0.5) * 0.15,
+                    vy: (Math.random() - 0.5) * 0.15,
+                    vz: (Math.random() - 0.5) * 0.05,
+                    r: Math.random() * 4 + 1.5,
+                    brightness: Math.random() * 0.8 + 0.2,
+                    pulse: Math.random() * Math.PI * 2,
+                    cluster: cl
+                };
+            });
+        }
+
+        build();
+        window.addEventListener('resize', build);
+
+        const FL = 400;
+        function project(n) {
+            const s = FL / (FL + n.z);
+            return {
+                px: window.innerWidth / 2 + (n.x - window.innerWidth / 2) * s,
+                py: window.innerHeight / 2 + (n.y - window.innerHeight / 2) * s,
+                s
+            };
+        }
+
+        const MAX_DIST_SCREEN = 150;
+
+        function draw() {
+            time += 0.008;
+            const colors = getThemeColors();
+            ctx.fillStyle = colors.bg;
+            ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+            nodes.forEach(n => {
+                n.x += n.vx;
+                n.y += n.vy;
+                n.z += n.vz;
+
+                if (n.x < -200) n.x = window.innerWidth + 200;
+                if (n.x > window.innerWidth + 200) n.x = -200;
+                if (n.y < -200) n.y = window.innerHeight + 200;
+                if (n.y > window.innerHeight + 200) n.y = -200;
+                if (n.z < 0) { n.z = 800; n.x = Math.random() * window.innerWidth; n.y = Math.random() * window.innerHeight; }
+                if (n.z > 800) n.z = 0;
+            });
+
+            const projected = nodes.map(n => project(n));
+
+            for (let i = 0; i < nodes.length; i++) {
+                const pi = projected[i];
+                if (pi.s < 0.25) continue;
+
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const pj = projected[j];
+                    if (pj.s < 0.25) continue;
+
+                    const dx = pi.px - pj.px;
+                    const dy = pi.py - pj.py;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist > MAX_DIST_SCREEN) continue;
+
+                    const sameCluster = nodes[i].cluster === nodes[j].cluster;
+                    const depthFactor = (pi.s + pj.s) * 0.5;
+                    const fadeFactor = 1 - dist / MAX_DIST_SCREEN;
+                    const alpha = fadeFactor * depthFactor * (sameCluster ? 0.15 : 0.03);
+
+                    if (alpha < 0.005) continue;
+
+                    const col = sameCluster ? colors.amber : colors.dim;
+                    ctx.beginPath();
+                    ctx.strokeStyle = `${col}${alpha.toFixed(3)})`;
+                    ctx.lineWidth = sameCluster ? 1.5 * depthFactor : 0.7 * depthFactor;
+                    ctx.moveTo(pi.px, pi.py);
+                    ctx.lineTo(pj.px, pj.py);
+                    ctx.stroke();
+                }
+            }
+
+            nodes.forEach((n, i) => {
+                const { px, py, s } = projected[i];
+                if (s < 0.2) return;
+
+                const pulse = Math.sin(time * 2 + n.pulse) * 0.3 + 0.7;
+                const r = n.r * s;
+                const alpha = n.brightness * pulse * s * 0.5;
+
+                let col = colors.amber;
+                if (n.brightness > 0.75) col = colors.amber_lt;
+
+                ctx.beginPath();
+                ctx.arc(px, py, r, 0, Math.PI * 2);
+                ctx.fillStyle = `${col}${Math.min(1, alpha).toFixed(3)})`;
+                ctx.fill();
+
+                if (n.brightness > 0.7 && r > 1.2) {
+                    const haloR = r * 6;
+                    const grad = ctx.createRadialGradient(px, py, 0, px, py, haloR);
+                    grad.addColorStop(0, `${colors.amber}${(alpha * 0.25).toFixed(3)})`);
+                    grad.addColorStop(1, `${colors.amber}0)`);
+                    ctx.beginPath();
+                    ctx.arc(px, py, haloR, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                }
+            });
+
+            raf = requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById('theme-toggle');
+            
+            function updateToggleIcon(theme) {
+                toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            updateToggleIcon(currentTheme);
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const current = document.documentElement.getAttribute('data-theme') || 'light';
+                const nextTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('theme', nextTheme);
+                updateToggleIcon(nextTheme);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\(", right: "\\)", display: false},
+                        {left: "\\[", right: "\\[", display: true}
+                    ],
+                    throwOnError : false
+                });
+            }
+        });
+    </script>
+</body>
+</html>

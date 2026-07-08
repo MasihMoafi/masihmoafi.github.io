@@ -1,0 +1,38 @@
+---
+layout: default
+---
+<article class="window">
+    <a href="{{ '/' | relative_url }}#projects" class="back-link">← Back to Projects</a>
+    
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
+            {{ page.title }}
+        </h1>
+        {% if page.meta %}
+        <p class="writeup-meta">{{ page.meta }}</p>
+        {% endif %}
+        <p class="writeup-meta" style="color: var(--accent); font-weight: bold; margin-top: 1rem;">
+            AUTHOR: MASIH MOAFI
+        </p>
+    </div>
+
+    <div class="writeup-content">
+        {{ content }}
+    </div>
+</article>
+
+<script>
+    // Make all images inside post write-ups clickable to open in full size
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.writeup-content img').forEach(img => {
+            if (img.parentElement.tagName !== 'A') {
+                const link = document.createElement('a');
+                link.href = img.src;
+                link.target = '_blank';
+                link.style.cursor = 'zoom-in';
+                img.parentNode.insertBefore(link, img);
+                link.appendChild(img);
+            }
+        });
+    });
+</script>
