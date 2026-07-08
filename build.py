@@ -191,6 +191,7 @@ def build_site():
             
         EXCLUDED_BLOG_POSTS = {'README.md', 'language.md', 'eyes-wide-shut.md', 'voice-commander.md', 'financial-market-analysis.md', 'amr-parsing-summarization.md'}
         blog_html = []
+        categories = set()
         for filename in sorted(os.listdir('.')):
             if filename.endswith('.md') and filename not in EXCLUDED_BLOG_POSTS:
                 slug = filename[:-3]
@@ -199,20 +200,33 @@ def build_site():
                 fm, _ = parse_frontmatter(md_content)
                 title = fm.get('title', slug.replace('-', ' ').title())
                 meta = fm.get('meta', '')
+                category = fm.get('category', 'Uncategorized')
+                categories.add(category)
                 
                 card = f"""
-        <div class="project-card">
+        <div class="project-card blog-card" data-category="{category}">
             <div class="project-header">
                 <h3 class="hover-chromatic"><a href="{slug}.html">{title}</a></h3>
+                <span class="project-stars tag">{category}</span>
             </div>
             <p class="project-description">{meta}</p>
             <a href="{slug}.html" class="project-link">Read Post &rarr;</a>
         </div>"""
                 blog_html.append(card)
-                
+
+        # Build tabs HTML
+        tabs_html = ['<div class="tabs" id="blog-tabs">']
+        tabs_html.append('<button class="tab-btn active" onclick="filterBlogPosts(\'All\')">All</button>')
+        for cat in sorted(list(categories)):
+            tabs_html.append(f'<button class="tab-btn" onclick="filterBlogPosts(\'{cat}\')">{cat}</button>')
+        tabs_html.append('</div>')
+        tabs_content = "\n".join(tabs_html)
+
         blog_content = "\n".join(blog_html) if blog_html else '        <p style="color:var(--text-muted); padding: 1rem 0;">No learning trajectories published yet. Add a .md file inside your Obsidian blog folder to sync.</p>'
         
-        index_html = index_html.replace('<!-- Dyn content injected by build.py -->', blog_content)
+        injection = tabs_content + '\n<div class="project-grid" id="blog-posts-list">\n' + blog_content + '\n</div>'
+        # The index.jekyll.html is modified to have <div id="blog-posts-container"><!-- Dyn content injected by build.py --></div>
+        index_html = index_html.replace('<!-- Dyn content injected by build.py -->', injection)
         with open(index_path, 'w', encoding='utf-8') as f:
             f.write(index_html)
     

@@ -2,6 +2,7 @@
 layout: post
 title: "Transformers From Scratch in Code"
 meta: "map: 1) hyperparams block"
+category: Transformers
 ---
 
 
@@ -128,3 +129,17 @@ $$(\huge T, \underline{T}) \times (\underline{T}, \text{head\_size}) = (T, \text
     
 2. `ln2` stabilizes the data _after_ attention, right _before_ it goes into the FFN.
 
+
+## The KV Cache
+
+The **KV Cache (Key-Value Cache)** is a crucial optimization used during the generation (inference) phase of autoregressive Transformers.
+
+When a Transformer generates text, it produces one token at a time. To generate the $N$-th token, the model needs to attend to all $N-1$ previous tokens. Without caching, the model would recompute the Keys (K) and Values (V) for all previous tokens at every single step, leading to redundant calculations and $O(N^2)$ time complexity for generating a sequence.
+
+The KV Cache solves this by storing the computed $K$ and $V$ vectors of previous tokens in memory.
+During generation:
+1. The model only computes the $Q, K, V$ vectors for the **newest** token.
+2. It appends the new $K$ and $V$ vectors to the cached history.
+3. The query $Q$ of the new token is then dotted with the entire cached $K$ matrix to compute attention scores, and the result is multiplied by the cached $V$ matrix.
+
+This reduces the time complexity of each generation step from $O(N)$ to $O(1)$ (ignoring the cache lookup time), massively speeding up inference at the cost of increased memory usage to store the cache.
