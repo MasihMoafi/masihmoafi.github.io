@@ -55,34 +55,56 @@ $$\huge\text{out} = \text{wei} \cdot V \rightarrow (B, T, T) \times (B, T, D) = 
 - **`forward(self, x)`**: This is called _every single time you pass data_ through the layer during training or inference. **`x` is the actual tensor of data moving through the network.**
 
 ### 1. Instantiation (uses __init__)
+
+```python
 my_attention_head = Head(head_size=16) 
+```
 
 ### 2. Execution (implicitly calls forward)
-output = my_attention_head(x)  # **x is your tensor of shape (B, T, C)**
 
+```python
+output = my_attention_head(x)  # x is your tensor of shape (B, T, C)
+```
+
+```python
 class Head(nn.Module):
-	def `__init__`(self, **d_head**): = **Instantiation**
-		self.key = nn.Linear(n_embd, head_size, bias=False)
-		self.query = nn.Linear(n_embd, head_size, bias=False)
-		self.value = nn.Linear(n_embd, head_size, bias=False)
-	def forward(self,x): = Execution
-	# 1. Calculate raw logits (affinities) 
-		logits = q @ k.transpose(-2, -1)
-	# 2. Softmax normalizes them to probabilities summing to 1.0   
-		attention_probs = F.softmax(logits, dim=-1)
+    def __init__(self, d_head):  # Instantiation
+        self.key   = nn.Linear(n_embd, head_size, bias=False)
+        self.query = nn.Linear(n_embd, head_size, bias=False)
+        self.value = nn.Linear(n_embd, head_size, bias=False)
+
+    def forward(self, x):  # Execution
+        # 1. Calculate raw logits (affinities)
+        logits = q @ k.transpose(-2, -1)
+        # 2. Softmax normalizes them to probabilities summing to 1.0
+        attention_probs = F.softmax(logits, dim=-1)
+
 class Multihead(nn.Module):
-	def `__init__`(self, **num_head, d_head**): = **instantiation**
-	def forward(self,x): = **Execution**
-class Forward(nn.Module):
-	def `__init__`(self, **n_embd**):
-	def forward(self,x)
+    def __init__(self, num_head, d_head):  # Instantiation
+        ...
+    def forward(self, x):  # Execution
+        ...
+
+class FeedForward(nn.Module):
+    def __init__(self, n_embd):
+        ...
+    def forward(self, x):
+        ...
+
 class Block(nn.Module):
-	def `__init__`(self, ):
-	def forward(self,x)
+    def __init__(self):
+        ...
+    def forward(self, x):
+        ...
+
 class GPT(nn.Module):
-	def `__init__`(self, ):
-	def forward(self,idx, targets=None)
-	def generate(self, idx, max_new_tokens):
+    def __init__(self):
+        ...
+    def forward(self, idx, targets=None):
+        ...
+    def generate(self, idx, max_new_tokens):
+        ...
+```
 
 
 ## On why the first class outputs (B, T, head_size)?

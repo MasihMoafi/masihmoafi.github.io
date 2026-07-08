@@ -36,7 +36,7 @@
     <!-- Main Content -->
     <main class="container">
         <article class="window">
-    <a href="index.html#projects" class="back-link">← Back to Projects</a>
+    <a href="index.html" class="back-link">← Back</a>
     
     <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
         <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
@@ -113,27 +113,50 @@ data moving through the network.</strong></p></li>
 </ul>
 <h3 id="instantiation-uses-init">1. Instantiation (uses
 <strong>init</strong>)</h3>
-<p>my_attention_head = Head(head_size=16)</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>my_attention_head <span class="op">=</span> Head(head_size<span class="op">=</span><span class="dv">16</span>) </span></code></pre></div>
 <h3 id="execution-implicitly-calls-forward">2. Execution (implicitly
 calls forward)</h3>
-<p>output = my_attention_head(x) # <strong>x is your tensor of shape (B,
-T, C)</strong></p>
-<p>class Head(nn.Module): def <code>__init__</code>(self,
-<strong>d_head</strong>): = <strong>Instantiation</strong> self.key =
-nn.Linear(n_embd, head_size, bias=False) self.query = nn.Linear(n_embd,
-head_size, bias=False) self.value = nn.Linear(n_embd, head_size,
-bias=False) def forward(self,x): = Execution # 1. Calculate raw logits
-(affinities) logits = q @ k.transpose(-2, -1) # 2. Softmax normalizes
-them to probabilities summing to 1.0<br />
-attention_probs = F.softmax(logits, dim=-1) class Multihead(nn.Module):
-def <code>__init__</code>(self, <strong>num_head, d_head</strong>): =
-<strong>instantiation</strong> def forward(self,x): =
-<strong>Execution</strong> class Forward(nn.Module): def
-<code>__init__</code>(self, <strong>n_embd</strong>): def
-forward(self,x) class Block(nn.Module): def <code>__init__</code>(self,
-): def forward(self,x) class GPT(nn.Module): def
-<code>__init__</code>(self, ): def forward(self,idx, targets=None) def
-generate(self, idx, max_new_tokens):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> my_attention_head(x)  <span class="co"># x is your tensor of shape (B, T, C)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Head(nn.Module):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, d_head):  <span class="co"># Instantiation</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.key   <span class="op">=</span> nn.Linear(n_embd, head_size, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.query <span class="op">=</span> nn.Linear(n_embd, head_size, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.value <span class="op">=</span> nn.Linear(n_embd, head_size, bias<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):  <span class="co"># Execution</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. Calculate raw logits (affinities)</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> q <span class="op">@</span> k.transpose(<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. Softmax normalizes them to probabilities summing to 1.0</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        attention_probs <span class="op">=</span> F.softmax(logits, dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Multihead(nn.Module):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, num_head, d_head):  <span class="co"># Instantiation</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):  <span class="co"># Execution</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FeedForward(nn.Module):</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_embd):</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Block(nn.Module):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GPT(nn.Module):</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, idx, targets<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generate(<span class="va">self</span>, idx, max_new_tokens):</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        ...</span></code></pre></div>
 <h2 id="on-why-the-first-class-outputs-b-t-head_size">On why the first
 class outputs (B, T, head_size)?</h2>
 <p><span class="math display">\huge(X, Y) \times (Y, Z) = (X,
@@ -166,19 +189,34 @@ right <em>before</em> it goes into the FFN.</p></li>
 </article>
 
 <script>
-    // Make all images inside post write-ups clickable to open in full size
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.writeup-content img').forEach(img => {
-            if (img.parentElement.tagName !== 'A') {
-                const link = document.createElement('a');
-                link.href = img.src;
-                link.target = '_blank';
-                link.style.cursor = 'zoom-in';
-                img.parentNode.insertBefore(link, img);
-                link.appendChild(img);
-            }
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all pandoc-generated math spans with KaTeX directly
+    document.querySelectorAll('.math.inline, .math.display').forEach(el => {
+        const latex = el.textContent;
+        const display = el.classList.contains('display');
+        try {
+            el.innerHTML = katex.renderToString(latex, {
+                displayMode: display,
+                throwOnError: false
+            });
+            el.classList.add('katex-rendered');
+        } catch(e) {
+            console.warn('KaTeX error:', e, latex);
+        }
     });
+
+    // 2. Make images clickable (open full-size in new tab)
+    document.querySelectorAll('.writeup-content img').forEach(img => {
+        if (img.parentElement.tagName !== 'A') {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.target = '_blank';
+            link.style.cursor = 'zoom-in';
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+        }
+    });
+});
 </script>
 
     </main>
