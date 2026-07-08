@@ -53,18 +53,10 @@ Single Attention Head Class (head_size) at first B, T, C = shape 4)
 head_size = n_embd // num_head wei = attention scores matrix</p>
 <h2 id="qs-for-recall">Qs for recall:</h2>
 <p>what’s d_head’s formula? what’s wei and its formula?</p>
-<h3 id="the-evolution-of-models">The Evolution of Models</h3>
-<p>Before we dive into the code, it is important to understand the
-trajectory of AI architectures that led us to Transformers. Early
-sequence processing relied heavily on RNNs, which struggled with
-long-term dependencies. <img src="visuals/history.png"
-alt="history.png" /> <img src="visuals/history-lm.png"
-alt="history-lm.png" /> <img src="visuals/rnn-ex.png"
-alt="rnn-ex.png" /></p>
-<p>The breakthrough came with attention mechanisms and embeddings (like
-Word2Vec), which laid the foundation for the Transformer architecture.
-<img src="visuals/word2vec.png" alt="word2vec.png" /> <img
-src="visuals/transformers.png" alt="transformers.png" /></p>
+<figure>
+<img src="visuals/transformers.png" alt="transformers.png" />
+<figcaption aria-hidden="true">transformers.png</figcaption>
+</figure>
 <h3 id="the-big-tensor-shape-correction-b-t-c">The Big Tensor Shape
 Correction (<span class="math inline">B, T, C</span>)</h3>
 <ul>
@@ -168,11 +160,6 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        ...</span>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generate(<span class="va">self</span>, idx, max_new_tokens):</span>
 <span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        ...</span></code></pre></div>
-<h3 id="computational-complexity-bottlenecks">Computational Complexity
-&amp; Bottlenecks</h3>
-<p>One of the primary challenges with scaling Transformers is the
-computational load, particularly in the attention layers. <img
-src="visuals/compute.png" alt="compute.png" /></p>
 <h2 id="on-why-the-first-class-outputs-b-t-head_size">On why the first
 class outputs (B, T, head_size)?</h2>
 <p><span class="math display">\huge(X, Y) \times (Y, Z) = (X,
@@ -200,11 +187,14 @@ Attention.</p></li>
 <li><p><code>ln2</code> stabilizes the data <em>after</em> attention,
 right <em>before</em> it goes into the FFN.</p></li>
 </ol>
-<h3 id="optimization-techniques">Optimization Techniques</h3>
-<p>As models scale, we rely heavily on modern optimization strategies
-such as FlashAttention and KV caching to maintain reasonable inference
-and training speeds. <img
-src="visuals/opt-techniques-kv-flash-quant.png"
+<h3 id="flash-attention">Flash Attention</h3>
+<p>Standard attention is bottlenecked by the <span
+class="math inline">O(N^2)</span> memory bandwidth costs of repeatedly
+reading and writing the <span class="math inline">N \times N</span>
+attention matrix to HBM (High Bandwidth Memory). FlashAttention solves
+this by fusing the operations and aggressively tiling the computation to
+keep it entirely within the fast SRAM, completely bypassing the massive
+I/O overhead. <img src="visuals/opt-techniques-kv-flash-quant.png"
 alt="opt-techniques-kv-flash-quant.png" /></p>
 
     </div>

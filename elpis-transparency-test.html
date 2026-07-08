@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Testing the local compilation pipeline">
+    <title>Elpis Transparency Test | Masih Moafi</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- KaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        // Apply theme before DOM paints to prevent flash of light theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</head>
+<body>
+
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand"><a href="index.html" style="text-decoration: none; color: inherit;">Masih Moafi</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="#" id="theme-toggle" style="cursor: pointer; font-size: 1.1rem; padding: 0 0.5rem; text-decoration: none; display: inline-block;">🌙</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="window">
+    <a href="index.html" class="back-link">← Back</a>
+    
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
+            Elpis Transparency Test
+        </h1>
+        Testing the local compilation pipeline
+        <p class="writeup-meta" style="color: var(--accent); font-weight: bold; margin-top: 1rem;">
+            AUTHOR: MASIH MOAFI
+        </p>
+    </div>
+
+    <div class="writeup-content">
+        <p>This is a proof of concept for the Elpis system.</p>
+<p>Here is some math to verify KaTeX rendering: <span
+class="math display">
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+</span></p>
+<p>And here is a local Obsidian image link: <img
+src="visuals/compute.png" alt="compute.png" /></p>
+
+    </div>
+</article>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all pandoc-generated math spans with KaTeX directly
+    document.querySelectorAll('.math.inline, .math.display').forEach(el => {
+        const latex = el.textContent;
+        const display = el.classList.contains('display');
+        try {
+            el.innerHTML = katex.renderToString(latex, {
+                displayMode: display,
+                throwOnError: false
+            });
+            el.classList.add('katex-rendered');
+        } catch(e) {
+            console.warn('KaTeX error:', e, latex);
+        }
+    });
+
+    // 2. Make images clickable (open full-size in new tab)
+    document.querySelectorAll('.writeup-content img').forEach(img => {
+        if (img.parentElement.tagName !== 'A') {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.target = '_blank';
+            link.style.cursor = 'zoom-in';
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+        }
+    });
+});
+</script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Masih Moafi. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById('theme-toggle');
+            
+            function updateToggleIcon(theme) {
+                toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            updateToggleIcon(currentTheme);
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const current = document.documentElement.getAttribute('data-theme') || 'light';
+                const nextTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('theme', nextTheme);
+                updateToggleIcon(nextTheme);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\(", right: "\\)", display: false},
+                        {left: "\\[", right: "\\[", display: true}
+                    ],
+                    throwOnError : false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
