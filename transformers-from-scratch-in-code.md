@@ -19,6 +19,16 @@ map:
 what's d_head's formula? 
 what's wei and its formula? 
 
+### The Evolution of Models
+Before we dive into the code, it is important to understand the trajectory of AI architectures that led us to Transformers. Early sequence processing relied heavily on RNNs, which struggled with long-term dependencies.
+![history.png](visuals/history.png)
+![history-lm.png](visuals/history-lm.png)
+![rnn-ex.png](visuals/rnn-ex.png)
+
+The breakthrough came with attention mechanisms and embeddings (like Word2Vec), which laid the foundation for the Transformer architecture.
+![word2vec.png](visuals/word2vec.png)
+![transformers.png](visuals/transformers.png)
+
 
 ### The Big Tensor Shape Correction ($B, T, C$)
 
@@ -106,6 +116,10 @@ class GPT(nn.Module):
         ...
 ```
 
+### Computational Complexity & Bottlenecks
+One of the primary challenges with scaling Transformers is the computational load, particularly in the attention layers.
+![compute.png](visuals/compute.png)
+
 
 ## On why the first class outputs (B, T, head_size)?
 $$\huge(X, Y) \times (Y, Z) = (X, Z)$$
@@ -128,12 +142,6 @@ $$(\huge T, \underline{T}) \times (\underline{T}, \text{head\_size}) = (T, \text
     
 2. `ln2` stabilizes the data _after_ attention, right _before_ it goes into the FFN.
 
-
-## Visual References
-![history.png](visuals/history.png)
-![history-lm.png](visuals/history-lm.png)
-![word2vec.png](visuals/word2vec.png)
-![rnn-ex.png](visuals/rnn-ex.png)
-![transformers.png](visuals/transformers.png)
-![compute.png](visuals/compute.png)
+### Optimization Techniques
+As models scale, we rely heavily on modern optimization strategies such as FlashAttention and KV caching to maintain reasonable inference and training speeds.
 ![opt-techniques-kv-flash-quant.png](visuals/opt-techniques-kv-flash-quant.png)
