@@ -1,0 +1,92 @@
+# Shared Project Language (masihmoafi.github.io)
+
+This document establishes a shared visual vocabulary and maps conversational terms to the raw HTML, CSS, and JS components of this project.
+
+---
+
+## 1. Visual Components
+
+### A. Background (SpaceBackground)
+*   **Concept**: An animated, 3D starfield constellation drawing orange/amber links and glowing nodes.
+*   **Implementation**: `<canvas id="space-canvas"></canvas>` at the root of the document.
+*   **Controls**: Programmed directly in standard JavaScript at the bottom of the HTML files.
+
+### B. Window
+*   **Concept**: A floating glassmorphic container with rounded edges, a semi-transparent surface, and backdrop-blur that refracts the background below it.
+*   **HTML Class**: `.window` (e.g., `<section class="window">`)
+*   **CSS Styles**:
+    ```css
+    border-radius: var(--radius-window); /* 2rem rounded corners */
+    background: rgba(255, 255, 255, 0.045); /* translucent glass */
+    backdrop-filter: blur(96px) saturate(210%); /* super blur */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* thin border */
+    ```
+
+### C. Navigation Bar (Navbar)
+*   **Concept**: The top header bar containing navigation links to navigate sections or pages.
+*   **HTML Class**: `.navbar` (e.g., `<nav class="navbar">`)
+*   **Visual state**: Semi-transparent dark glass blur fixed at the top of the screen.
+
+### D. Project Card
+*   **Concept**: Smaller glassmorphic blocks nesting inside a Project Window, representing individual portfolio items.
+*   **HTML Class**: `.project-card`
+*   **Interactive behavior**: Shifts slightly right and glows with an amber highlight on hover.
+
+### E. Button
+*   **Concept**: Rounded interactive components for actions or redirects.
+*   **HTML Classes**:
+    *   `.btn-primary`: Translucent orange background with amber border and glow on hover.
+    *   `.btn-secondary`: Dark translucent background with white/grey border.
+    *   `.contact-btn`: Navigation-style buttons for external links.
+
+---
+
+## 2. Interaction Themes
+
+### A. Chromatic Hover
+*   **Concept**: Text elements that transition to an orange color with a horizontal chromatic glow (text-shadow) and letter-spacing expansion when hovered.
+*   **HTML Class**: `.hover-chromatic`
+
+### B. Cohesion Guardrails
+*   **Sharp Edges**: Prohibited for all window and button surfaces. Standard rounding is fixed to `2rem` (`var(--radius-window)`) to match the home page.
+*   **Overflow Clipping**: All windows and cards enforce clipping (`overflow: hidden`) to prevent internal content from leaking sharp corners.
+
+---
+
+## 3. Layout & Spacing Guardrails (Lessons Learned)
+
+### A. CSS Specificity Override Prevention
+*   **The Bug**: Applying vertical margins or paddings on standard tag selectors (like `main`) while also assigning helper layout classes (like `.container` which sets `padding: 0 1.5rem;`) causes the class selector to completely override the tag selector padding to `0`.
+*   **Prevention Rule**: Never mix vertical tag padding and utility layout classes on the same element, or always specify target horizontal properties explicitly (`padding-left` and `padding-right` instead of short-hand `padding`) to prevent specificity conflicts.
+
+### B. Jekyll Compiler Desync in Local Previewing
+*   **The Bug**: Modifying HTML files to use Jekyll layout headers and YAML frontmatter breaks the styling in local previewing since standard Python `http.server` serves raw files directly (leaving uncompiled liquid tags and YAML metadata visible).
+*   **Prevention Rule**: Always run `python3 build.py` after editing layouts or page content to recompile Jekyll templates into static previewable files (`index.html` and `eyes-wide-shut.html`).
+
+### C. Sub-Component Spacing Uniformity
+*   **The Rule**: Vertical spacing inside grid lists (like project card list `.project-grid`) must match the main layout gap variable (`var(--layout-gap)`) exactly. Do not hardcode larger values (like `2rem` or `3rem`) for internal elements; they must inherit the page's spacing variable to maintain perfect layout unity.
+
+### D. Sticky Navbar Scroll Target Offset
+*   **The Rule**: When linking to anchor IDs on a page with a sticky header, you must define a vertical scroll offset (`scroll-margin-top: 4.2rem;` on the target section elements). This prevents the sticky header from blocking the section title and ensures the previous window is completely scrolled out of the viewport.
+
+---
+
+## 4. Theme & Blog Synchronization (Advanced Features)
+
+### A. Dynamic Day/Night Theme Toggling
+*   **Concept**: Users can toggle between Day Theme (light mode, warm paper style) and Night Theme (dark mode, Deus Ex black/amber style).
+*   **Implementation**: A `#theme-toggle` link in the navbar toggles the `data-theme` attribute on the root `<html>` element and persists it using `localStorage` to prevent page load flashes.
+*   **Aesthetics**:
+    *   **Day Theme (default)**: Uses `#fdfcf9` background, dark text, and translucent white windows (`rgba(255, 255, 255, 0.62)`).
+    *   **Night Theme**: Uses `#080808` background, light text, and dark glass windows (`rgba(12, 12, 12, 0.68)`).
+    *   **Canvas Adaptability**: The particle canvas reads the active theme attribute on frame draws to dynamically morph star colors and connection lines (deep-orange to gold for light; gold to amber for dark) and transition the background fill color.
+
+### B. Obsidian Blog Synchronization Harness
+*   **Concept**: Zero-friction writing flow. Instead of using web interfaces, all posts are written in Obsidian and automatically synced/compiled to the website.
+*   **Harness**: `build.py` integrates a synchronization script that:
+    1.  Scans the vault blog directory (`/home/masih/Desktop/f/o/Main Vault/blog/`).
+    2.  Converts Obsidian's double-bracket image wiki-links (`![[image.png]]` or `![[image.png|width]]`) to standard Markdown (`![image](visuals/image.png)`).
+    3.  Locates and copies image attachments from the Obsidian Vault into the website's `visuals/` directory.
+    4.  Extracts the filename to define the post title and grabs the first non-empty lines for the snippet description meta tag.
+    5.  Appends Jekyll frontmatter and writes the output `.md` file to the website root.
+    6.  Compiles the synced posts via Pandoc (with `--katex`) and automatically lists them under the "Learning Trajectories" section on the homepage.

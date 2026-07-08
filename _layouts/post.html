@@ -2,7 +2,7 @@
 layout: default
 ---
 <article class="window">
-    <a href="{{ '/' | relative_url }}#projects" class="back-link">← Back to Projects</a>
+    <a href="{{ '/' | relative_url }}" class="back-link">← Back</a>
     
     <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
         <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
@@ -22,17 +22,32 @@ layout: default
 </article>
 
 <script>
-    // Make all images inside post write-ups clickable to open in full size
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.writeup-content img').forEach(img => {
-            if (img.parentElement.tagName !== 'A') {
-                const link = document.createElement('a');
-                link.href = img.src;
-                link.target = '_blank';
-                link.style.cursor = 'zoom-in';
-                img.parentNode.insertBefore(link, img);
-                link.appendChild(img);
-            }
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all pandoc-generated math spans with KaTeX directly
+    document.querySelectorAll('.math.inline, .math.display').forEach(el => {
+        const latex = el.textContent;
+        const display = el.classList.contains('display');
+        try {
+            el.innerHTML = katex.renderToString(latex, {
+                displayMode: display,
+                throwOnError: false
+            });
+            el.classList.add('katex-rendered');
+        } catch(e) {
+            console.warn('KaTeX error:', e, latex);
+        }
     });
+
+    // 2. Make images clickable (open full-size in new tab)
+    document.querySelectorAll('.writeup-content img').forEach(img => {
+        if (img.parentElement.tagName !== 'A') {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.target = '_blank';
+            link.style.cursor = 'zoom-in';
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+        }
+    });
+});
 </script>
