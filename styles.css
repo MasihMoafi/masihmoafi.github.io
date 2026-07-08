@@ -356,6 +356,43 @@ p {
     line-height: 1.9;
 }
 
+/* Tabs UI */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--layout-gap);
+    margin-bottom: var(--layout-gap);
+}
+
+.tab-btn {
+    text-decoration: none;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--radius-button);
+    font-size: var(--font-size-small);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tab-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 152, 0, 0.08);
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.15);
+}
+
+.tab-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 152, 0, 0.15);
+    box-shadow: 0 0 15px rgba(255, 152, 0, 0.25);
+}
+
 /* Project Cards / Grid */
 .project-grid {
     display: flex;
@@ -679,10 +716,10 @@ tr:hover {
 
 /* KaTeX Math sizing override */
 .katex {
-    font-size: 1.15em !important;
+    font-size: 0.9em !important;
 }
 .math-display {
-    font-size: 1.25em !important;
+    font-size: 0.95em !important;
     padding: 1rem;
     overflow-x: auto;
 }

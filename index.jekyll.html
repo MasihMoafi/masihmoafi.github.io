@@ -118,15 +118,39 @@ title: Home
 </section>
 
 <!-- Learning Trajectories Section -->
-<section id="blog">
-    <h2 class="section-title hover-chromatic" style="margin-bottom: 0.75rem;">Learning Trajectories</h2>
-    <p style="margin-bottom: 2rem; color: var(--text-secondary);">
+<section id="blog" class="window">
+    <h2 class="section-title hover-chromatic" style="margin-bottom: var(--layout-gap);">Learning Trajectories</h2>
+    <p style="margin-bottom: var(--layout-gap); color: var(--text-secondary);">
         My research trajectories, experiments, and zero-to-hero guides on deep learning, neural networks, and transformers.
     </p>
-    <div class="project-grid" id="blog-posts-list">
+    <div id="blog-posts-container">
         <!-- Dyn content injected by build.py -->
     </div>
 </section>
+
+<script>
+function filterBlogPosts(category) {
+    // Update active tab styling
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(tab => {
+        if (tab.textContent.trim() === category) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+
+    // Filter cards
+    const cards = document.querySelectorAll('.blog-card');
+    cards.forEach(card => {
+        if (category === 'All' || card.getAttribute('data-category') === category) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
 
 <!-- Contact Window -->
 <section id="contact" class="window contact-window">
