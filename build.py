@@ -198,7 +198,9 @@ def build_site():
                 with open(filename, 'r', encoding='utf-8') as f:
                     md_content = f.read()
                 fm, _ = parse_frontmatter(md_content)
-                title = fm.get('title', slug.replace('-', ' ').title())
+                title = fm.get('title') or fm.get('name') or slug.replace('-', ' ').title()
+                if title.startswith('[') and title.endswith(']'):
+                    title = title[1:-1]
                 meta = fm.get('meta', '')
                 category = fm.get('category', 'Uncategorized')
                 categories.add(category)
@@ -239,6 +241,11 @@ def build_site():
                 md_content = f.read()
             
             fm, body = parse_frontmatter(md_content)
+            if 'title' not in fm:
+                title_val = fm.get('name') or slug.replace('-', ' ').title()
+                if title_val.startswith('[') and title_val.endswith(']'):
+                    title_val = title_val[1:-1]
+                fm['title'] = title_val
             layout = fm.get('layout', 'post')
             
             # Compile Markdown body to HTML using pandoc with KaTeX math rendering support
