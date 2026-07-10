@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Masih Moafi - AI/ML Engineer building practical AI tools">
+    <title>Masih Moafi | AI/ML Engineer</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: async load to avoid render-blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap"></noscript>
+    <!-- KaTeX Math Rendering: deferred so it never blocks page render -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        // Apply theme before DOM paints to prevent flash of light theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</head>
+<body>
+
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand"><a href="index.html" style="text-decoration: none; color: inherit;">Masih Moafi</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" style="cursor: pointer; font-size: 1.1rem; padding: 0 0.5rem; text-decoration: none; display: inline-block;">🌙</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="window">
+    <a href="index.html" class="back-link">← Back</a>
+    
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
+            {{ page.title }}
+        </h1>
+        
+        <p class="writeup-meta" style="color: var(--accent); font-weight: bold; margin-top: 1rem;">
+            AUTHOR: MASIH MOAFI
+        </p>
+    </div>
+
+    <div class="writeup-content">
+        <h2 id="content">Content</h2>
+<h3 id="intro---what-is-it-briefly">Intro - What is it? Briefly</h3>
+<p>A predictive machine learning system explicitly designed to generate
+profitable trading signals from high-frequency (1-minute) EUR/USD forex
+data. The flagship focus of this repository is a custom Double-Tower
+Gated Transformer Network (GTN) built to predict Take Profit / Stop Loss
+(TP/SL) strikes.</p>
+<h3 id="how-does-it-work-technical-spec.">How Does it Work? Technical
+Spec.</h3>
+<p>The data pipeline processes 1-minute OHLC bars to map out realistic
+TP/SL bounds over a 24-hour lookahead rather than using fixed time
+horizons. The core model, the <strong>Gated Transformer Network
+(GTN)</strong>, utilizes a dual-tower architecture that separates
+feature interactions from temporal sequences. It replaces traditional
+sinusoidal encodings with learned time embeddings to capture market
+regime shifts and session overlaps (London, NY, Tokyo). To combat severe
+class imbalance (the model’s tendency to constantly predict
+“keep/hold”), the network optimizes against a custom cost matrix and
+weighted cross-entropy loss. <img
+src="visuals/Pasted%20image%2020260710145647.png"
+alt="Pasted image 20260710145647.png" /> ### What Sets This Project
+Apart? Instead of optimizing for standard classification accuracy, the
+pipeline tackles raw profitability. The intent is for models to learn
+the structural mechanics of price action, balancing Risk/Reward ratios
+(e.g., 1:2) against real-world MetaTrader 5 execution constraints
+(enforcing next-candle open entries and proper UTF-16-LE signal
+formatting).</p>
+<h3 id="evals-and-test-series">Evals and test Series</h3>
+<ul>
+<li><strong>Primary Metric</strong>: Composite Score =
+<code>(buy_precision + sell_precision)/2 - 0.25 * |buy_precision - sell_precision|</code></li>
+<li><strong>Best GTN Score</strong>: 0.36 Composite</li>
+<li><strong>Baseline (LightGBM)</strong>: 0.37 Composite (prone to
+overfitting the ‘keep’ class).</li>
+<li><strong>Status</strong>: The dual-tower architecture maps the
+feature-space better than tree-based models, but converting high
+composite scores to live P&amp;L in MT5 remains the primary hurdle.</li>
+</ul>
+<h3 id="future-dev">Future Dev</h3>
+<p>find out why despite everything we underfitted? I did manage to
+overfit on a single batch of data; however, based on the scaling laws
+paper, I tried to do 1 epoch with proportionate maximum parameters that
+I can efficiently fit into the 80GB VRAM of an A100 GPU or 2*40GB VRAM
+of A100 depending of availability.</p>
+<p>reference paper: https://arxiv.org/pdf/2103.14438 Gated Transformer
+Networks for Multivariate Time Series Classification</p>
+
+    </div>
+</article>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all pandoc-generated math spans with KaTeX directly
+    document.querySelectorAll('.math.inline, .math.display').forEach(el => {
+        const latex = el.textContent;
+        const display = el.classList.contains('display');
+        try {
+            el.innerHTML = katex.renderToString(latex, {
+                displayMode: display,
+                throwOnError: false
+            });
+            el.classList.add('katex-rendered');
+        } catch(e) {
+            console.warn('KaTeX error:', e, latex);
+        }
+    });
+
+    // 2. Make images clickable (open full-size in new tab)
+    document.querySelectorAll('.writeup-content img').forEach(img => {
+        if (img.parentElement.tagName !== 'A') {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.target = '_blank';
+            link.style.cursor = 'zoom-in';
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+        }
+    });
+});
+</script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Masih Moafi. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById('theme-toggle');
+            
+            function updateToggleIcon(theme) {
+                toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            updateToggleIcon(currentTheme);
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const current = document.documentElement.getAttribute('data-theme') || 'light';
+                const nextTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('theme', nextTheme);
+                updateToggleIcon(nextTheme);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\(", right: "\\)", display: false},
+                        {left: "\\[", right: "\\[", display: true}
+                    ],
+                    throwOnError : false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
