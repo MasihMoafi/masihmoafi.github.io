@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Masih Moafi - AI/ML Engineer building practical AI tools">
+    <title>BoomDeal: Refactoring a Conversational Used-Car Aggregator | Masih Moafi</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: async load to avoid render-blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;700&display=swap"></noscript>
+    <!-- KaTeX Math Rendering: deferred so it never blocks page render -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        // Apply theme before DOM paints to prevent flash of light theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+</head>
+<body>
+
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand"><a href="index.html" style="text-decoration: none; color: inherit;">Masih Moafi</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" style="cursor: pointer; font-size: 1.1rem; padding: 0 0.5rem; text-decoration: none; display: inline-block;">🌙</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="window">
+    <a href="index.html" class="back-link">← Back</a>
+    
+    <div style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        <h1 class="hero-title hover-chromatic" style="margin-bottom: 1rem;">
+            BoomDeal: Refactoring a Conversational Used-Car Aggregator
+        </h1>
+        
+        <p class="writeup-meta" style="color: var(--accent); font-weight: bold; margin-top: 1rem;">
+            AUTHOR: MASIH MOAFI
+        </p>
+    </div>
+
+    <div class="writeup-content">
+        <h1
+id="boomdeal-refactoring-a-conversational-used-car-aggregator">BoomDeal:
+Refactoring a Conversational Used-Car Aggregator</h1>
+<p>In my recent role, I took over a non-functional, legacy AI-powered
+car search engine for the Omani used-car market. The system had great
+ambitions—aggregating tens of thousands of listings and offering a
+conversational AI interface—but the existing implementation was unstable
+and prone to crashing.</p>
+<p>Here is how I refactored the backend architecture, stabilized the
+agent’s logic, and built a robust production-ready system.</p>
+<hr />
+<h2 id="the-core-architecture">The Core Architecture</h2>
+<p>The system coordinates multi-platform scraping, asynchronous
+processing, and a hybrid AI agent search flow.</p>
+<pre class="mermaid"><code>graph TD
+    A[User Message] --&gt; B[Redis Session Loader]
+    B --&gt; C[OpenRouter LLM Call]
+    C --&gt; D{Entities Extracted?}
+    D -- No --&gt; E[Deterministic Prompt Guard]
+    D -- Yes --&gt; F{Database Has Results?}
+    F -- No --&gt; G[Query Relaxation: Suggest Alt Years/Models]
+    F -- Yes --&gt; H[Return Results]
+    E --&gt; I[Update Redis Session &amp; Reply]
+    G --&gt; I
+    H --&gt; I</code></pre>
+<hr />
+<h2 id="asynchronous-data-pipeline-celery-redis">1. Asynchronous Data
+Pipeline (Celery + Redis)</h2>
+<p>Scraping sites like Dubizzle and OpenSooq produces raw, unstructured
+data that is highly volatile. To prevent pipeline blockages, we separate
+raw data ingestion from validation and model ingestion:</p>
+<ol type="1">
+<li><strong>Ingestion:</strong> Raw scrapers fetch page source and save
+directly to <code>RawCarData</code> records.</li>
+<li><strong>Asynchronous Processing:</strong> Celery beat triggers batch
+tasks (<code>process_raw_car_data_batch_task</code>) which process raw
+data in chunks of 50.</li>
+<li><strong>Exponential Backoff:</strong> The processor handles custom
+network/db retries to keep data ingestion robust.</li>
+</ol>
+<p>This ensures that scraping failures or target website DOM updates do
+not block the active database or cause data loss.</p>
+<hr />
+<h2 id="the-hybrid-agent-state-machine">2. The Hybrid Agent State
+Machine</h2>
+<p>A pure LLM conversational search is brittle; LLMs often hallucinate
+filters, lose session states, or fail on shorthand inputs like “S” or
+“11”. We built a <strong>hybrid state machine</strong> that overlays
+deterministic rules on top of OpenRouter LLM extractions:</p>
+<ul>
+<li><strong>Redis Caching:</strong> Session state is loaded and saved to
+Redis (<code>agent_v2:&lt;conversation_id&gt;</code>) each turn to track
+filters.</li>
+<li><strong>Deterministic Overrides:</strong> Regex guards detect reset
+phrases (e.g. “something else”) or brand switches, resetting search
+filters immediately.</li>
+<li><strong>Shorthand Normalization:</strong> Custom token extractors
+catch single-word inputs (like model families or years) that LLMs
+typically drop.</li>
+<li><strong>Entity Validation:</strong> The system guarantees that
+<code>brand</code>, <code>model</code>, and <code>year</code> are
+populated before executing queries, intercepting the LLM response to ask
+for missing required inputs if needed.</li>
+</ul>
+<hr />
+<h2 id="database-driven-query-relaxation">3. Database-Driven Query
+Relaxation</h2>
+<p>If a user searches for an exact combination (e.g.,
+<code>2019 Toyota Camry</code>) that is out of stock, returning “0
+results” leads to high user churn. We implemented a query relaxation
+layer:</p>
+<ol type="1">
+<li><strong>Alternative Years:</strong> If the exact year is missing,
+the system finds the closest year with active listings (e.g. “I couldn’t
+find a 2019 Camry, showing 2020 instead”).</li>
+<li><strong>Model Family Options:</strong> If the exact model variant is
+missing, it lists related models (e.g., searching for “s500” returns
+S-Class variants).</li>
+<li><strong>Conversation State:</strong> A pending suggestion state is
+held in Redis, enabling the user to confirm with simple phrases like
+“show them” or “doesn’t matter” to execute the relaxed search.</li>
+</ol>
+<hr />
+<h2 id="end-to-end-regression-testing">4. End-to-End Regression
+Testing</h2>
+<p>To verify the agent’s stability, we built <code>test_agent.py</code>
+containing <strong>59 integration test scenarios</strong> testing: *
+Double typos (<code>toyata camri</code> -&gt; Toyota Camry). * Spacing
+issues (<code>rav 4</code> -&gt; RAV4). * Shorthand variants
+(<code>s-500</code>, <code>s500</code>). * Arabic input processing. *
+Meta questions and reset phrasing.</p>
+<p>Every deployment run executes this suite to guarantee no
+conversational regressions occur.</p>
+
+    </div>
+</article>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render all pandoc-generated math spans with KaTeX directly
+    document.querySelectorAll('.math.inline, .math.display').forEach(el => {
+        const latex = el.textContent;
+        const display = el.classList.contains('display');
+        try {
+            el.innerHTML = katex.renderToString(latex, {
+                displayMode: display,
+                throwOnError: false
+            });
+            el.classList.add('katex-rendered');
+        } catch(e) {
+            console.warn('KaTeX error:', e, latex);
+        }
+    });
+
+    // 2. Make images clickable (open full-size in new tab)
+    document.querySelectorAll('.writeup-content img').forEach(img => {
+        if (img.parentElement.tagName !== 'A') {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.target = '_blank';
+            link.style.cursor = 'zoom-in';
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+        }
+    });
+});
+</script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Masih Moafi. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById('theme-toggle');
+            
+            function updateToggleIcon(theme) {
+                toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            }
+            
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            updateToggleIcon(currentTheme);
+            
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const current = document.documentElement.getAttribute('data-theme') || 'light';
+                const nextTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', nextTheme);
+                localStorage.setItem('theme', nextTheme);
+                updateToggleIcon(nextTheme);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},
+                        {left: "\\(", right: "\\)", display: false},
+                        {left: "\\[", right: "\\[", display: true}
+                    ],
+                    throwOnError : false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
