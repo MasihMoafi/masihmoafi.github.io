@@ -132,6 +132,7 @@ def sync_obsidian_posts():
         return
         
     print(f"Syncing blog posts from Obsidian Vault: {obsidian_blog_dir}...")
+    active_posts = set()
     for filename in os.listdir(obsidian_blog_dir):
         if filename.endswith('.md'):
             src_path = os.path.join(obsidian_blog_dir, filename)
@@ -139,6 +140,8 @@ def sync_obsidian_posts():
             slug = title.lower().replace(' ', '-').replace('_', '-')
             slug = re.sub(r'[^a-z0-9\-]', '', slug)
             dest_filename = f"{slug}.md"
+            active_posts.add(dest_filename)
+            active_posts.add(f"{slug}.html")
             
             with open(src_path, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -162,6 +165,17 @@ def sync_obsidian_posts():
             with open(dest_filename, 'w', encoding='utf-8') as f:
                 f.write(content)
             print(f"-> Synced & updated: {dest_filename}")
+
+    # Remove stale posts not present in active_posts
+    SPECIAL_FILES = {'index.html', 'index.jekyll.html', 'README.md', 'language.md'}
+    for name in os.listdir('.'):
+        if (name.endswith('.md') or name.endswith('.html')) and name not in SPECIAL_FILES:
+            if name not in active_posts:
+                print(f"🧹 Deleting stale post file: {name}")
+                try:
+                    os.remove(name)
+                except Exception as e:
+                    print(f"Error removing {name}: {e}")
 
 def build_site():
     print("Building site locally...")

@@ -5,8 +5,6 @@ tags: django, celery, python, agents
 description: "How I stabilized a non-functional legacy search system into a robust, hybrid conversational agent with Celery batch ETL and database-driven query relaxation."
 ---
 
-# BoomDeal: Refactoring a Conversational Used-Car Aggregator
-
 In my recent role, I took over a non-functional, legacy AI-powered car search engine for the Omani used-car market. The system had great ambitions—aggregating tens of thousands of listings and offering a conversational AI interface—but the existing implementation was unstable and prone to crashing. 
 
 Here is how I refactored the backend architecture, stabilized the agent's logic, and built a robust production-ready system.

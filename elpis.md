@@ -12,7 +12,13 @@ subtitle:"famous Bruce Lee Saying Altered to understand Elpis better: "You put a
 ## 1. Introduction: What is Elpis?
 
 Elpis (Ancient Greek: ἐλπίς) is the literal Greek word for "hope" or "expectation." Depending on the context—mythological, philosophical, or biblical—its meaning shifts from an ambiguous anticipation of the future to an absolute, unshakeable certainty.
-🏛️ Greek Mythology: The Spirit of Pandora's BoxIn Greek mythology, Elpis is the personified goddess or spirit (daimon) of hope. She is most famous for her role in the myth of Pandora’s box (or jar):The Myth: When Pandora opened the jar, she inadvertently released all the evils, diseases, and hardships into the world. As she slammed the lid shut, Elpis was the only spirit left trapped inside.The Ambiguity: Ancient Greeks viewed hope with nuance. To some, Elpis remaining in the jar meant humanity was granted a comforting coping mechanism to endure life's hardships. To others, it was viewed negatively—as a cruel illusion or false expectation that extends human suffering.
+🏛️ Greek Mythology: The Spirit of Pandora's Box
+
+In Greek mythology, Elpis is the personified goddess or spirit (daimon) of hope. She is most famous for her role in the myth of Pandora’s box (or jar):
+
+The Myth: When Pandora opened the jar, she inadvertently released all the evils, diseases, and hardships into the world. As she slammed the lid shut, Elpis was the only spirit left trapped inside.
+
+The Ambiguity: Ancient Greeks viewed hope with nuance. To some, Elpis remaining in the jar meant humanity was granted a comforting coping mechanism to endure life's hardships. To others, it was viewed negatively—as a cruel illusion or false expectation that extends human suffering.
 
 in our terminology, Elpis doesn't have a simple/ single definition. You will know Elpis by understanding its attributes:
 
