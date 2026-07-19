@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Masih Moafi - CV</title>
+<style>
+@font-face {
+  font-family: "PT Serif";
+  src: url("file:///usr/share/fonts/truetype/paratype/PTF55F.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "PT Serif";
+  src: url("file:///usr/share/fonts/truetype/paratype/PTF75F.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "PT Serif";
+  src: url("file:///usr/share/fonts/truetype/paratype/PTF56F.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@page {
+  size: A4;
+  margin: 16mm 16mm 15mm 16mm;
+  background: #f7f5ef;
+}
+:root {
+  --bg: #f7f5ef;
+  --fg: #242321;
+  --muted: #5f5a53;
+  --line: #d0cbc2;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+  font-size: 10pt;
+  line-height: 1.27;
+  -webkit-font-smoothing: antialiased;
+}
+body { background: var(--bg); }
+a { color: var(--fg); text-decoration: underline; text-decoration-thickness: 0.6px; text-underline-offset: 1.5px; }
+h1, h2, h3, p, ul { margin-top: 0; }
+h1 { margin-bottom: 1mm; font-size: 22pt; line-height: 1.04; font-weight: 700; letter-spacing: -0.25pt; }
+.subtitle { margin: 0 0 4mm; font-size: 11.5pt; font-weight: 700; }
+.contact { margin-bottom: 5.5mm; color: var(--muted); line-height: 1.42; }
+.contact a { color: var(--fg); }
+h2 { margin: 0 0 2.3mm; font-size: 12.5pt; line-height: 1.15; font-weight: 700; }
+h3 { margin: 0; font-size: 11.3pt; line-height: 1.18; font-weight: 700; }
+.section { margin-top: 4.1mm; }
+.rule-section { border-top: 0.55pt solid var(--line); padding-top: 4mm; }
+.profile { margin-bottom: 4mm; font-size: 10.1pt; line-height: 1.33; }
+.entry { margin-bottom: 3.5mm; break-inside: avoid; }
+.entry:last-child { margin-bottom: 0; }
+.entry-head { display: table; width: 100%; table-layout: fixed; margin-bottom: 0.4mm; }
+.entry-title { display: table-cell; vertical-align: baseline; }
+.entry-date { display: table-cell; width: 39mm; vertical-align: baseline; text-align: right; color: var(--muted); font-style: italic; white-space: nowrap; }
+.org { margin: 0.1mm 0 0.7mm; color: var(--fg); }
+.tags { margin: 0 0 1mm; color: var(--muted); font-style: italic; }
+.tech { margin: 0 0 1mm; color: var(--muted); }
+.tech strong, .org strong, .label { color: var(--fg); font-weight: 700; }
+.tech .key { color: var(--fg); font-weight: 400; }
+ul { margin: 0; padding-left: 4.4mm; }
+li { margin: 0 0 0.4mm; padding-left: 0.5mm; }
+.education-row { display: table; width: 100%; table-layout: fixed; margin-bottom: 1.1mm; }
+.education-main { display: table-cell; }
+.education-date { display: table-cell; width: 39mm; text-align: right; color: var(--muted); font-style: italic; white-space: nowrap; }
+.education-secondary { color: var(--muted); }
+.education-secondary .education-date { font-style: normal; }
+.page-break { break-before: page; }
+.skill-grid { display: table; width: 100%; table-layout: fixed; }
+.skill-col { display: table-cell; width: 50%; vertical-align: top; }
+.skill-col:first-child { padding-right: 7mm; }
+.skill-col:last-child { padding-left: 7mm; }
+.skill { margin-bottom: 4.1mm; break-inside: avoid; }
+.skill:last-child { margin-bottom: 0; }
+.skill-title { margin-bottom: 0.3mm; font-size: 10.5pt; font-weight: 700; }
+.skill-text { color: var(--muted); }
+.skill-text .key { color: var(--fg); font-weight: 400; }
+.language { margin-bottom: 0; }
+.project { margin-bottom: 3.7mm; break-inside: avoid; }
+.project:last-child { margin-bottom: 0; }
+.project-title { margin-bottom: 0.5mm; font-size: 11.2pt; font-weight: 700; }
+.project-sub { margin: 0 0 0.6mm; color: var(--muted); font-style: italic; }
+.project ul { margin-bottom: 0.6mm; }
+.certs p { margin-bottom: 1.25mm; }
+.certs h2 { font-size: 12.1pt; }
+.muted { color: var(--muted); }
+.page-two-section {
+  margin: 0;
+  padding: 0 0 4.5mm;
+}
+.page-two-section + .page-two-section {
+  border-top: 0.55pt solid var(--line);
+  padding-top: 4mm;
+}
+.page-two-section:last-child {
+  padding-bottom: 0;
+}
+.page-two-section > :last-child {
+  margin-bottom: 0 !important;
+}
+</style>
+</head>
+<body>
+  <section>
+    <h1>Masih Moafi</h1>
+    <p class="subtitle">AI/ML Engineer</p>
+    <div class="contact">
+      <div><a href="mailto:masihmoafi12@gmail.com">masihmoafi12@gmail.com</a> | <a href="mailto:m.moafi@el.iut.ac.ir">m.moafi@el.iut.ac.ir</a> | <a href="tel:+989303585707">+98 930 358 5707</a></div>
+      <div><a href="https://masihmoafi.com">Website</a> | <a href="https://github.com/MasihMoafi">GitHub</a> | <a href="https://linkedin.com/in/MasihMoafi1">LinkedIn</a> | Open to relocation</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Profile</h2>
+    <p class="profile">AI/ML Engineer focused on LLM systems, context engineering, hybrid retrieval (RAG), backend engineering, and production ML pipelines. Experienced building MCP servers, agentic workflows, structured-output systems, and production infrastructure.</p>
+  </section>
+
+  <section class="section rule-section">
+    <h2>Experience</h2>
+
+    <article class="entry">
+      <div class="entry-head">
+        <h3 class="entry-title">AI/ML Engineer</h3>
+        <div class="entry-date">May 2025 - August 2026</div>
+      </div>
+      <p class="org"><strong>AI Can Do</strong> · Muscat, Oman</p>
+      <p class="tags">Backend Engineering · DevOps · Agentic Workflows</p>
+      <p class="tech"><strong>Tech Stack:</strong> <span class="key">Python</span>, Django, <span class="key">PostgreSQL</span>, Redis, Celery, <span class="key">Docker</span>, <span class="key">CI/CD</span>, Nginx, OpenRouter API</p>
+      <ul>
+        <li>Built the backend for Boomdeal, a C2C car-search marketplace aggregating ~20,000 listings from multiple platforms, including scraping infrastructure.</li>
+        <li>Developed a conversational car-search agent using LLM-powered query translation via OpenRouter API.</li>
+        <li>Configured DevOps infrastructure: Nginx, SSL, Docker deployment, and GitHub Actions CI/CD for automated maintenance.</li>
+        <li>Designed validation rules and optimized serializer pipelines for clean error handling under MVP concurrency.</li>
+      </ul>
+    </article>
+
+    <article class="entry">
+      <div class="entry-head">
+        <h3 class="entry-title">AI/ML Engineer</h3>
+        <div class="entry-date">Sept 2024 - Dec 2025</div>
+      </div>
+      <p class="org"><strong>Pejvak Rayane</strong> · Isfahan, Iran</p>
+      <p class="tags">MCP · Hybrid Retrieval (RAG) · Agent Orchestration · Structured Outputs</p>
+      <p class="tech"><strong>Tech Stack:</strong> Python, MCP, Qdrant, BM25, LangGraph, Pydantic; open-source model-based reranking</p>
+      <ul>
+        <li>Built Model Context Protocol (MCP) servers exposing local system and utility tools to AI agents.</li>
+        <li>Developed a hybrid retrieval pipeline combining semantic vector search, BM25 keyword search, and model-based reranking.</li>
+        <li>Implemented scoped memory structures to manage rules, project context, and state persistence across agent sessions.</li>
+        <li>Worked on structured output verification, validation rules, and agent orchestration.</li>
+      </ul>
+    </article>
+
+    <article class="entry">
+      <div class="entry-head">
+        <h3 class="entry-title">ML Engineer (Freelance)</h3>
+        <div class="entry-date">Sept 2024 - Apr 2025</div>
+      </div>
+      <p class="org"><strong>Financial Market Analysis</strong> · Tehran, Iran</p>
+      <p class="tags">ML Engineering · NLP · Feature Engineering · Model Training · MLOps</p>
+      <p class="tech"><strong>Tech Stack:</strong> PyTorch, LightGBM, CatBoost, Pandas, NumPy, Vast.ai (A100/H100), MetaTrader 5 (MQL5)</p>
+      <ul>
+        <li>Built an end-to-end signal prediction and backtesting pipeline for EUR/USD Forex signal generation.</li>
+        <li>Developed Gated Transformer Network (GTN) experiments and LightGBM baselines with custom loss functions for class imbalance.</li>
+        <li>Optimized feature computation using vectorized Pandas and NumPy operations, replacing slow loops.</li>
+        <li>Managed GPU instances on Vast.ai (NVIDIA A100/H100) for PyTorch training experiments.</li>
+        <li>Integrated predictions with MetaTrader 5 (MQL5) for backtesting and live signal execution.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="section rule-section">
+    <h2>Education</h2>
+    <div class="education-row">
+      <div class="education-main"><h3>M.Sc. in AI &amp; Robotics</h3><div>Isfahan University of Technology (IUT) · Isfahan, Iran</div></div>
+      <div class="education-date">2025 - 2027 (Expected)</div>
+    </div>
+    <div class="education-row education-secondary">
+      <div class="education-main">B.Sc. in Interior Architecture · Shiraz University of Arts</div>
+      <div class="education-date">2017 - 2022</div>
+    </div>
+  </section>
+
+  <div class="page-break"></div>
+
+  <section class="page-two-section">
+    <h2>Languages</h2>
+    <p class="language"><strong>TOEFL iBT: 112/120</strong> - Reading: 30 · Listening: 29 · Speaking: 26 · Writing: 27 | August 2024</p>
+  </section>
+
+  <section class="page-two-section">
+    <h2>Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-col">
+        <div class="skill"><div class="skill-title">AI Engineering</div><div class="skill-text"><span class="key">LLMs</span>, Agentic Workflows, Context Engineering, Hybrid Retrieval (RAG), Fine-tuning, MCP, LangGraph, Structured Outputs, Qdrant, Reranking, Pydantic</div></div>
+        <div class="skill"><div class="skill-title">Backend Engineering</div><div class="skill-text"><span class="key">Python</span>, <span class="key">Django</span>, <span class="key">PostgreSQL</span>, Redis, Celery, FastAPI</div></div>
+      </div>
+      <div class="skill-col">
+        <div class="skill"><div class="skill-title">ML Engineering</div><div class="skill-text"><span class="key">PyTorch</span>, NLP, Transformers, Gated Transformer Networks (GTN), LightGBM, CatBoost, Feature Engineering, Time-series Modeling, Custom Loss Functions</div></div>
+        <div class="skill"><div class="skill-title">MLOps &amp; DevOps</div><div class="skill-text"><span class="key">Docker</span>, <span class="key">CI/CD</span>, <span class="key">Git</span>, GitHub Actions, Nginx, Vast.ai (A100/H100)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-two-section">
+    <h2>Key Projects</h2>
+
+    <article class="project">
+      <div class="project-title"><a href="https://github.com/MasihMoafi/Elpis">Elpis</a> - Context-engineered terminal UI for coding agents</div>
+      <p class="project-sub">Context Engineering · Post-turn Pruning · Context Ledger · Rust TUI</p>
+      <ul>
+        <li>Built a Rust/Ratatui terminal UI with a visible Context Ledger that makes each admitted context source inspectable and toggleable before the next model request.</li>
+        <li>Implemented deterministic post-turn context pruning that replaces older tool output with compact summaries while retaining full transcripts on disk.</li>
+      </ul>
+      <p class="tech"><strong>Tech:</strong> Rust, Ratatui, Python, MCP, Qdrant</p>
+    </article>
+
+    <article class="project">
+      <div class="project-title"><a href="https://github.com/MasihMoafi/Eyes-Wide-Shut">Eyes Wide Shut</a> - LLM safety and misalignment research</div>
+      <p class="project-sub">LLM Safety · Misalignment Research · Adversarial Evaluation</p>
+      <ul>
+        <li>Discovered 5 high-severity vulnerabilities including cross-lingual attacks and semantic exploits.</li>
+        <li>Documented specific attack vectors: linguistic arbitrage, semantic bypass, CoT leaks, and intent laundering.</li>
+      </ul>
+      <p class="tech"><strong>Tech:</strong> Python, Ollama, Kaggle</p>
+    </article>
+
+    <article class="project">
+      <div class="project-title"><a href="https://github.com/MasihMoafi/Voice-commander">Voice Commander</a> - Local GPU-accelerated speech-to-text</div>
+      <p class="project-sub">Speech-to-text · CUDA · Local inference · LLM post-processing</p>
+      <ul>
+        <li>Built hotkey-activated voice transcription using Whisper.cpp (C++) with CUDA acceleration and LLM-powered post-processing.</li>
+      </ul>
+      <p class="tech"><strong>Tech:</strong> Python, Whisper.cpp, C++, CUDA</p>
+    </article>
+  </section>
+
+  <section class="page-two-section certs">
+    <h2>Selected Coursework</h2>
+    <p><strong>Andrej Karpathy:</strong> MLPs, RNNs, LSTMs, WaveNet, Tokenization, Transformers, GPT-2</p>
+    <p><strong>Anthropic Academy:</strong> MCP Advanced, Agents &amp; Workflows, Advanced RAG, Claude Code</p>
+    <p><strong>Coursera:</strong> Machine Learning Specialization, Deep Learning Specialization, Machine Learning Engineering for Production (MLOps)</p>
+    <p><strong>DeepLearning.AI:</strong> PyTorch for Deep Learning, Post-Training &amp; Optimization (SFT, GRPO), AI Agents, Structured Outputs, Evaluating RAG</p>
+    <p><strong>LangChain Academy:</strong> LangGraph, LangChain</p>
+  </section>
+</body>
+</html>
