@@ -1,0 +1,38 @@
+name: Publish CV PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - cv/cv-download.html
+      - .github/workflows/publish-cv-pdf.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-pt-serif
+          python -m pip install 'weasyprint==68.0'
+      - name: Generate and verify PDF
+        run: |
+          mkdir -p generated
+          weasyprint cv/cv-download.html generated/Masih_Moafi_CV.pdf
+          echo '3dd28e010edcacbae2004505deb43bbbb389de3696266d090b559a27b8142236  generated/Masih_Moafi_CV.pdf' | sha256sum --check --strict
+      - name: Publish stable public CV asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view cv-latest >/dev/null 2>&1 || gh release create cv-latest --title 'Masih Moafi CV' --notes 'Verified current CV PDF.'
+          gh release upload cv-latest generated/Masih_Moafi_CV.pdf --clobber
