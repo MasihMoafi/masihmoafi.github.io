@@ -30,7 +30,13 @@ jobs:
           mkdir -p CV
           weasyprint cv/cv-download.html CV/Masih_Moafi_CV.pdf
           echo '3dd28e010edcacbae2004505deb43bbbb389de3696266d090b559a27b8142236  CV/Masih_Moafi_CV.pdf' | sha256sum --check --strict
-      - name: Commit verified PDF
+      - name: Publish public download asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view cv-latest >/dev/null 2>&1 || gh release create cv-latest --title 'Masih Moafi CV' --notes 'Verified current CV PDF.'
+          gh release upload cv-latest CV/Masih_Moafi_CV.pdf --clobber
+      - name: Commit verified PDF for GitHub Pages
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Publish the verified CV PDF
