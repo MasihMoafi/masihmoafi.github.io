@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - cv/cv-download.html
-      - cv/.publish
+      - cv/README.md
       - .github/workflows/publish-cv-pdf.yml
   workflow_dispatch:
 
