@@ -1,9 +1,7 @@
-# Masih Moafi
+# MasihMoafi.github.io
 
-Current portfolio: https://masihmoafi.com
+This repository intentionally contains only a redirect to the canonical portfolio:
 
-## Projects
+https://masihmoafi.com
 
-- [Elpis](https://github.com/MasihMoafi/Elpis) — provider-neutral terminal agent shell for controlled context, persistent memory, safe execution, and session continuity.
-- [Eyes Wide Shut](https://github.com/MasihMoafi/Eyes-Wide-Shut) — independent LLM security research.
-- [Voice Commander](https://github.com/MasihMoafi/Voice-commander) — local GPU-accelerated speech-to-text.
+The previous GitHub Pages site remains recoverable from Git history.
