@@ -1,10 +1,9 @@
 # Masih Moafi
 
----
+Current portfolio: https://masihmoafi.com
 
 ## Projects
 
-*   ### [Eyes Wide Shut](./eyes-wide-shut.md)
-    *   [Read the Project Write-Up](https://masihmoafi.vercel.app/blog/eyes-wide-shut)
-*   ### [A-Modular-Kingdom](./a-modular-kingdom.md)
-    *   *all-my-projects-into-one!*
+- [Elpis](https://github.com/MasihMoafi/Elpis) — provider-neutral terminal agent shell for controlled context, persistent memory, safe execution, and session continuity.
+- [Eyes Wide Shut](https://github.com/MasihMoafi/Eyes-Wide-Shut) — independent LLM security research.
+- [Voice Commander](https://github.com/MasihMoafi/Voice-commander) — local GPU-accelerated speech-to-text.
